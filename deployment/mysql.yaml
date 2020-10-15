@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-sample-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-sample-mysql
+  template:
+    metadata:
+      labels:
+        app: kube-sample-mysql
+    spec:
+      containers:
+        - name: kube-sample-mysql
+          image: mysql:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "passwd01"
+            - name: MYSQL_DATABASE
+              value: "ptest"
+            - name: MYSQL_USER
+              value: "puser"
+            - name: MYSQL_PASSWORD
+              value: "passwd01"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-sample-mysql
+spec:
+  selector:
+    app: kube-sample-mysql
+  ports:
+    - name: tcp
+      port: 3306
+      targetPort: 3306
