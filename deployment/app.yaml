@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: kube-sample-perf
-          image: jp.icr.io/2132694-cr-test-1/kube-sample-perf-toolchain:latest
+          image: jp.icr.io/2132694-cr-test-1/kube-sample-perf-toolchain:11
           imagePullPolicy: Always   # 同一タグでもイメージを取得しなおす
           ports:
             - containerPort: 8080
