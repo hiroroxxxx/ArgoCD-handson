@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-sample-perf
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kube-sample-perf
+  template:
+    metadata:
+      labels:
+        app: kube-sample-perf
+      annotations:
+        prometheus.io/scrape: "true"    # Scrapgin対象
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8080:8080" # Podポート:コンテナポート
+    spec:
+      containers:
+        - name: kube-sample-perf
+          image: image-registry.openshift-image-registry.svc:5000/hoge1/kube-sample-perf:1.0.0
+          imagePullPolicy: Always   # 同一タグでもイメージを取得しなおす
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 10 # probe開始までの待機時間
+            periodSeconds: 3        # probe間隔
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-sample-perf
+spec:
+  selector:
+    app: kube-sample-perf # Podのラベルと一致
+  ports:
+  - name: http
+    port: 8080           # Serviceの内部ポート
+    targetPort: 8080     # コンテナの公開ポート
