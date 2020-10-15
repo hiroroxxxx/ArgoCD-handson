@@ -40,3 +40,14 @@ spec:
   - name: http
     port: 8080           # Serviceの内部ポート
     targetPort: 8080     # コンテナの公開ポート
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: kube-sample-perf
+spec:
+  to:
+    kind: Service
+    name: kube-sample-perf
+  port:
+    targetPort: http
