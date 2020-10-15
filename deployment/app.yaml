@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: kube-sample-perf
-          image: image-registry.openshift-image-registry.svc:5000/hoge1/kube-sample-perf:1.0.0
+          image: jp.icr.io/2132694-cr-test-1/kube-sample-perf-toolchain:latest
           imagePullPolicy: Always   # 同一タグでもイメージを取得しなおす
           ports:
             - containerPort: 8080
